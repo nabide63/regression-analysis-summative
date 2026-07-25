@@ -27,7 +27,10 @@ class PredictionApi {
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode(features),
           )
-          .timeout(const Duration(seconds: 15));
+          // Render free-tier instances spin down when idle and can take
+          // 30-60s to wake on the first request, so allow enough time
+          // for that cold start instead of just the steady-state latency.
+          .timeout(const Duration(seconds: 60));
     } catch (e) {
       throw ApiException('Could not reach the API at $baseUrl.\n($e)');
     }
