@@ -26,7 +26,9 @@ class _PredictScreenState extends State<PredictScreen> {
   @override
   void initState() {
     super.initState();
-    _baseUrlController = TextEditingController(text: 'http://127.0.0.1:8000');
+    _baseUrlController = TextEditingController(
+      text: 'https://milk-yield-predictor-viec.onrender.com',
+    );
     _api = PredictionApi(baseUrl: _baseUrlController.text);
 
     for (final spec in allNumericFields) {
@@ -62,8 +64,8 @@ class _PredictScreenState extends State<PredictScreen> {
         content: TextField(
           controller: controller,
           decoration: const InputDecoration(
-            hintText: 'http://127.0.0.1:8000',
-            helperText: 'Use http://10.0.2.2:8000 from an Android emulator.',
+            hintText: 'https://milk-yield-predictor-viec.onrender.com',
+            helperText: 'Defaults to my deployed API. Change this if you\'re running the backend locally.',
           ),
           keyboardType: TextInputType.url,
         ),

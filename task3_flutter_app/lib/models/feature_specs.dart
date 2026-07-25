@@ -1,8 +1,5 @@
-/// Feature definitions for the cow prediction form.
-///
-/// Mirrors task2_api/features.py and task2_api/schemas.py (field bounds,
-/// category values, and the example record) so the form only ever sends
-/// values the API's Pydantic validation will accept.
+// Field definitions for the prediction form. These have to match
+// task2_api/features.py and schemas.py or the API will reject the request.
 library;
 
 class NumericFieldSpec {

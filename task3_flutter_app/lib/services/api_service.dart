@@ -10,7 +10,7 @@ class ApiException implements Exception {
   String toString() => message;
 }
 
-/// Thin client for the Task 2 FastAPI service (main.py: POST /predict).
+// Calls my Task 2 API (POST /predict) and returns the predicted yield.
 class PredictionApi {
   String baseUrl;
 
