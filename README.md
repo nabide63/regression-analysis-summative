@@ -4,6 +4,18 @@
 
  Mission is to use software engineering and data analysis to build practical tools that empower Busoga's livestock farmers to increase profitability and improve local nutrition. Problem: Small-scale dairy farmers there often make feeding and management decisions without knowing how those decisions affect milk production, which makes yields inconsistent and squeezes profitability.
 
+## Dataset Description
+
+The dataset contains **250,000 records and 37 columns** describing individual dairy cattle and their daily milk production. Each row represents one cow on one day, covering feeding, environmental, health/vaccination, and animal-profile characteristics alongside the target, `Milk_Yield_L`.
+
+## Dataset Source
+
+- **Name:** Cattle Health and Feeding Data
+- **File used:** `global_cattle_milk_yield_prediction_dataset.csv`
+- **Platform:** Kaggle
+- **Link:** https://www.kaggle.com/datasets/shahhet2812/cattle-health-and-feeding-data
+- **Owner:** shahhet2812
+
 ## Repository Structure
 
 This repo is organised into the three tasks of the summative assignment:
@@ -79,7 +91,12 @@ Interactive Swagger UI docs ( use to try `/predict` and `/retrain`):
 - `GET /` — basic status message
 - `GET /health` — health check, also reports whether the model file loaded
 - `POST /predict` — send one cow's feature values, get back a predicted daily milk yield in litres
-- `POST /retrain` — upload a CSV of new labelled data to retrain the model in place
+- `POST /retrain` — upload a CSV of new labelled data to retrain the model immediately (manual, one-off)
+- `POST /ingest` — upload a CSV of new labelled data to be queued for **automatic** retraining
+
+### Automatic retraining on new data
+
+A background loop (started in the app's lifespan) checks `data/incoming/` every 60 seconds. Any CSV queued there via `POST /ingest` is folded into the training set, the model is retrained and hot-swapped automatically, and the file is archived — so a model update is triggered by new data showing up, not by a person remembering to call `/retrain`.
 
 ### Running it locally
 

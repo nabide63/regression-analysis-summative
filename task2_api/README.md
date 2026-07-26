@@ -24,7 +24,12 @@ responds instantly.
 - `GET /` - basic status message
 - `GET /health` - health check, also tells you if the model file loaded
 - `POST /predict` - send a single cow's features, get back a predicted milk yield
-- `POST /retrain` - upload a CSV of new labeled data to retrain the model
+- `POST /retrain` - upload a CSV of new labeled data to retrain the model immediately (manual, one-off)
+- `POST /ingest` - upload a CSV of new labeled data to be picked up automatically by the background retraining loop (see below), instead of retraining immediately
+
+### Automatic retraining on new data
+
+Besides the manual `/retrain` endpoint, there's a background loop (started in the app's `lifespan`) that checks `data/incoming/` every 60 seconds. Any CSV dropped there via `POST /ingest` gets folded into the training set, the model is retrained and swapped in automatically, and the file is archived to `data/incoming/processed/` - no one has to remember to trigger a retrain by hand once new data shows up.
 
 ## Running it locally
 

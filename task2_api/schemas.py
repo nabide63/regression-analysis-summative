@@ -116,3 +116,8 @@ class RetrainResponse(BaseModel):
     train_r2: float
     test_r2: float
     test_rmse: float
+
+
+class IngestResponse(BaseModel):
+    message: str
+    rows_queued: int
