@@ -28,9 +28,18 @@ responds instantly.
 
 ## Running it locally
 
+This project uses [uv](https://docs.astral.sh/uv/) for package and virtual environment
+management. Install uv first (see their install docs), then from this folder:
+
 ```
-pip install -r requirements.txt
-uvicorn main:app --reload
+uv sync
+uv run uvicorn main:app --reload
 ```
 
-Then open http://127.0.0.1:8000/docs to try it out.
+`uv sync` reads `pyproject.toml` / `uv.lock` and creates a `.venv` with the exact
+pinned versions - no need to create or activate a venv yourself. Then open
+http://127.0.0.1:8000/docs to try it out.
+
+`requirements.txt` is still kept in the repo (regenerated from `uv.lock` via
+`uv export --no-hashes --no-dev -o requirements.txt`) purely so Render's
+pip-based build stays working - it's not meant to be edited by hand.

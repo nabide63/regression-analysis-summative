@@ -1,0 +1,15 @@
+[project]
+name = "milk-yield-api"
+version = "1.0.0"
+description = "FastAPI backend serving the milk yield prediction model (Task 2 of the regression analysis summative)"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.115.6",
+    "uvicorn[standard]==0.34.0",
+    "pydantic==2.10.4",
+    "scikit-learn==1.9.0",
+    "pandas==3.0.3",
+    "numpy==2.5.1",
+    "joblib==1.5.3",
+    "python-multipart==0.0.20",
+]
