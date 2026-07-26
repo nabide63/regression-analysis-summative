@@ -116,24 +116,26 @@ class _PredictScreenState extends State<PredictScreen> {
       _result = null;
     });
 
-    final payload = <String, dynamic>{};
-    for (final spec in allNumericFields) {
-      final text = _numericControllers[spec.key]!.text;
-      final value = num.parse(text);
-      payload[spec.key] = spec.isInt ? value.toInt() : value.toDouble();
-    }
-    for (final spec in vaccineFields) {
-      payload[spec.key] = (_vaccineValues[spec.key]! ? 1 : 0);
-    }
-    for (final spec in categoricalFields) {
-      payload[spec.key] = _categoricalValues[spec.key];
-    }
-
     try {
+      final payload = <String, dynamic>{};
+      for (final spec in allNumericFields) {
+        final text = _numericControllers[spec.key]!.text;
+        final value = num.parse(text);
+        payload[spec.key] = spec.isInt ? value.toInt() : value.toDouble();
+      }
+      for (final spec in vaccineFields) {
+        payload[spec.key] = (_vaccineValues[spec.key]! ? 1 : 0);
+      }
+      for (final spec in categoricalFields) {
+        payload[spec.key] = _categoricalValues[spec.key];
+      }
+
       final prediction = await _api.predict(payload);
       setState(() => _result = prediction);
     } on ApiException catch (e) {
       setState(() => _error = e.message);
+    } on FormatException {
+      setState(() => _error = 'One of the fields contains an invalid number.');
     } finally {
       setState(() => _loading = false);
       _scrollToResult();
