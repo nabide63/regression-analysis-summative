@@ -1,11 +1,11 @@
 """
-Feature definitions shared by the prediction schema and the retraining pipeline.
+Feature definitions I share between the prediction schema and the retraining pipeline.
 
-These lists and category values come straight from the feature engineering
-section of task1_regression_analysis/multivariate.ipynb (the "Dropping Columns",
-"Encoding Categorical Variables" and "Standardization" cells). Keeping them here
-as a single source of truth means main.py (validation) and train_utils.py
-(retraining) can never drift apart on what a "cow record" looks like.
+These lists and category values are pulled straight from the feature
+engineering part of task1_regression_analysis/multivariate.ipynb (the
+"Dropping Columns", "Encoding Categorical Variables" and "Standardization"
+cells). I keep them here in one place so main.py (validation) and
+train_utils.py (retraining) always agree on what a "cow record" looks like.
 """
 
 NUMERIC_FEATURES = [
@@ -49,9 +49,9 @@ TARGET = "Milk_Yield_L"
 
 ALL_FEATURES = NUMERIC_FEATURES + CATEGORICAL_FEATURES
 
-# Exact category values seen in the training data (df_clean[col].unique()).
-# Used both for Pydantic Literal validation in schemas.py and for sanity-checking
-# uploaded retrain data.
+# These are the exact category values I saw in the training data
+# (df_clean[col].unique()). I use them for the Pydantic Literal validation
+# in schemas.py and to sanity-check any CSV uploaded for retraining.
 BREED_CATEGORIES = [
     "Africander", "Ankole", "Australian_Friesian_Sahiwal", "Australian_Milking_Zebu",
     "Ayrshire", "Boran", "Brown_Swiss", "Butana", "Danish_Red", "Deoni",

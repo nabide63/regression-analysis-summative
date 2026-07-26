@@ -1,16 +1,17 @@
 """
-Pydantic request/response models for the milk yield API.
+Pydantic request/response models for my milk yield API.
 
-Range bounds on every numeric field are the actual min/max observed in the
-250,000-row training set (see the df.describe().T cell in the notebook).
-That is a deliberate choice: it keeps predictions inside the region the
-model was actually trained on, instead of letting a client extrapolate to
-values (e.g. a 900kg cow) the LinearRegression pipeline never learned from.
+I set the min/max bounds on every numeric field to the actual min/max I saw
+in the 250,000-row training set (check the df.describe().T cell in the
+notebook). I did this on purpose so predictions stay inside the range the
+model was actually trained on, instead of letting someone send in a value
+like a 900kg cow that the LinearRegression pipeline never saw during training.
 
-Vaccine flags and categorical breed/season/etc fields use Literal, which
-FastAPI turns into both a type check AND an enum of allowed values (visible
-as dropdowns in Swagger UI) - so a bad request (wrong type OR unknown
-category) is rejected with a 422 before it ever reaches the model.
+For the vaccine flags and categorical fields (breed, season, etc.) I used
+Literal, which makes FastAPI do a type check AND restrict it to an enum of
+allowed values (shows up as dropdowns in Swagger UI). So a bad request,
+whether it's the wrong type or an unknown category, gets rejected with a 422
+before it even reaches my model.
 """
 
 from typing import Literal

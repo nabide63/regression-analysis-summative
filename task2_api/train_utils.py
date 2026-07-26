@@ -1,11 +1,11 @@
 """
-Builds and retrains the milk yield pipeline.
+Builds and retrains my milk yield pipeline.
 
-Mirrors exactly what task1_regression_analysis/multivariate.ipynb does for the
-winning model (LinearRegression): StandardScaler on numeric features,
-OneHotEncoder on categorical features, wrapped together with the model in one
-sklearn Pipeline so preprocessing can never drift out of sync with the model
-at prediction time.
+This mirrors exactly what I did in task1_regression_analysis/multivariate.ipynb
+for the winning model (LinearRegression): StandardScaler on the numeric
+features, OneHotEncoder on the categorical features, all wrapped together with
+the model in one sklearn Pipeline so preprocessing never drifts out of sync
+with the model at prediction time.
 """
 
 import numpy as np
@@ -41,7 +41,7 @@ def validate_training_columns(df: pd.DataFrame) -> None:
 
 
 def retrain_pipeline(combined_df: pd.DataFrame) -> tuple[Pipeline, dict]:
-    """Fits a fresh pipeline on combined_df and returns it with test metrics."""
+    """Trains a fresh pipeline on combined_df and hands back the test metrics too."""
     X = combined_df[ALL_FEATURES]
     y = combined_df[TARGET]
 

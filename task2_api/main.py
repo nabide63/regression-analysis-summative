@@ -1,13 +1,13 @@
 """
-FastAPI service for the dairy cattle milk yield prediction model (Task 2).
+FastAPI service for my dairy cattle milk yield prediction model (Task 2).
 
-Wraps the LinearRegression pipeline trained in
-task1_regression_analysis/multivariate.ipynb behind two endpoints:
-  - POST /predict  -> single-cow prediction
-  - POST /retrain  -> retrain the model when new labeled data is uploaded
+This basically wraps the LinearRegression pipeline I trained in
+task1_regression_analysis/multivariate.ipynb and exposes it as two endpoints:
+  - POST /predict  -> get a prediction for one cow
+  - POST /retrain  -> retrain the model when I upload new labeled data
 
-Run locally with: uvicorn main:app --reload
-Interactive docs: http://127.0.0.1:8000/docs
+Run it locally with: uvicorn main:app --reload
+Then check the interactive docs at: http://127.0.0.1:8000/docs
 """
 
 import io
@@ -37,21 +37,20 @@ app = FastAPI(
 )
 
 # --- CORS ---
-# This API has no authentication and serves a single, non-sensitive read
-# (a milk yield number) plus a retrain operation gated only by uploading a
-# correctly-shaped CSV - there is no user data, cookies or session state to
-# protect. So we allow any origin (allow_origins=["*"]) to reach it, since
-# the Flutter app may be tested as a web build from an unpredictable local
-# dev origin (e.g. http://localhost:<random port>) and Swagger UI's "Try it
-# out" button, and graders opening the docs from their own machines, all
-# need to call this API from origins we cannot list in advance.
-# What IS restricted:
-#   - allow_methods is limited to GET and POST, since the API only ever
-#     reads (health check, docs) or accepts new data (predict, retrain) -
-#     there is no PUT/PATCH/DELETE route, so those verbs are never allowed.
-#   - allow_credentials is False, because we allow_origins=["*"]; the CORS
-#     spec forbids combining a wildcard origin with credentialed requests,
-#     and we don't use cookies/auth headers anyway.
+# I'm not using any authentication here since this API only returns a milk
+# yield number and lets you retrain by uploading a CSV - nothing sensitive,
+# no user data, no cookies/sessions to worry about. That's why I open it up
+# to any origin (allow_origins=["*"]): my Flutter app might run as a web
+# build on some random localhost port, and Swagger UI's "Try it out" button
+# plus my graders opening the docs from their own machines all need to hit
+# this API from origins I can't list ahead of time.
+# What I did lock down:
+#   - allow_methods only allows GET and POST, since this API only ever reads
+#     (health check, docs) or takes in new data (predict, retrain) - I never
+#     use PUT/PATCH/DELETE so those are left out.
+#   - allow_credentials is False because you can't mix a wildcard origin with
+#     credentialed requests (the CORS spec doesn't allow that combo), and I'm
+#     not using cookies or auth headers anyway.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
