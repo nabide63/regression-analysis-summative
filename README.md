@@ -148,7 +148,7 @@ A Flutter app where you fill in a form with a cow's stats (age, weight, feeding,
 
 A short (max 7-minute) walkthrough covering the mission, the API in Swagger UI, and the mobile app in action:
 
-**[YouTube demo link — TODO: add before submission]**
+**YouTube demo link — https://youtu.be/kjq8AVtlOp0**
 
 ## Tech Stack
 
