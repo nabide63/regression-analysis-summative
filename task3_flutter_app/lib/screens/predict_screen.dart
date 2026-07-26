@@ -12,6 +12,8 @@ class PredictScreen extends StatefulWidget {
 
 class _PredictScreenState extends State<PredictScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _scrollController = ScrollController();
+  final _resultKey = GlobalKey();
   late PredictionApi _api;
   late TextEditingController _baseUrlController;
 
@@ -49,10 +51,25 @@ class _PredictScreenState extends State<PredictScreen> {
   @override
   void dispose() {
     _baseUrlController.dispose();
+    _scrollController.dispose();
     for (final c in _numericControllers.values) {
       c.dispose();
     }
     super.dispose();
+  }
+
+  void _scrollToResult() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final context = _resultKey.currentContext;
+      if (context != null) {
+        Scrollable.ensureVisible(
+          context,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+          alignment: 0.1,
+        );
+      }
+    });
   }
 
   Future<void> _editBaseUrl() async {
@@ -119,6 +136,7 @@ class _PredictScreenState extends State<PredictScreen> {
       setState(() => _error = e.message);
     } finally {
       setState(() => _loading = false);
+      _scrollToResult();
     }
   }
 
@@ -138,10 +156,9 @@ class _PredictScreenState extends State<PredictScreen> {
       body: Form(
         key: _formKey,
         child: ListView(
+          controller: _scrollController,
           padding: const EdgeInsets.all(16),
           children: [
-            _buildResultCard(context),
-            const SizedBox(height: 8),
             _buildSection(context, 'Animal profile', animalProfileFields),
             _buildSection(context, 'Feeding', feedingFields),
             _buildSection(context, 'Activity', activityFields),
@@ -162,6 +179,19 @@ class _PredictScreenState extends State<PredictScreen> {
               label: Text(_loading ? 'Predicting…' : 'Predict milk yield'),
               style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
             ),
+            const SizedBox(height: 16),
+            Container(
+              key: _resultKey,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) => SizeTransition(
+                  sizeFactor: animation,
+                  alignment: Alignment.topCenter,
+                  child: FadeTransition(opacity: animation, child: child),
+                ),
+                child: _buildResultCard(context),
+              ),
+            ),
             const SizedBox(height: 32),
           ],
         ),
@@ -172,6 +202,7 @@ class _PredictScreenState extends State<PredictScreen> {
   Widget _buildResultCard(BuildContext context) {
     if (_error != null) {
       return Card(
+        key: ValueKey(_error),
         color: Theme.of(context).colorScheme.errorContainer,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -192,6 +223,7 @@ class _PredictScreenState extends State<PredictScreen> {
     }
     if (_result != null) {
       return Card(
+        key: ValueKey(_result),
         color: Theme.of(context).colorScheme.primaryContainer,
         child: Padding(
           padding: const EdgeInsets.all(16),
