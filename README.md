@@ -155,3 +155,7 @@ A short (max 7-minute) walkthrough covering the mission, the API in Swagger UI, 
 - **Modelling**: Python, pandas, NumPy, scikit-learn, matplotlib, seaborn
 - **API**: FastAPI, Pydantic, Uvicorn, joblib — deployed on Render
 - **Mobile app**: Flutter/Dart
+
+
+Credit:
+Claude AI assisted in generating this README file
